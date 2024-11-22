@@ -70,7 +70,7 @@ Here are some examples of what you can do with Glyph.
 ### Sum of the first 10 even numbers
 
 ```
-10 ⇡ # Create a range from 0 to 10
+10 ↑ # Create a range from 1 to 10
 ⊕ 2 % ¬ ⊃ # Filter out the odd numbers
 ∑ # Sum the array
 ```
@@ -78,7 +78,7 @@ Here are some examples of what you can do with Glyph.
 ### Factorial of 5
 
 ```
-5 ⇡ # Create a range from 0 to 5
+5 ↑ # Create a range from 1 to 5
 ∏ # Multiply the array
 ```
 
