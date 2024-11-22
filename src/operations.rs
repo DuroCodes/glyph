@@ -3,7 +3,6 @@ pub enum Op {
     Number(i32),     // numeric literal
     Array(Vec<i32>), // Array literal [1 2 3]
     Range,           // ↑ creates range [1..=n]
-    ZeroRange,       // ⇡ creates range [0..n]
     Add,             // + adds arrays elementwise
     Subtract,        // - subtracts arrays elementwise
     Multiply,        // × multiplies arrays elementwise
@@ -25,4 +24,8 @@ pub enum Op {
     Duplicate,       // ⊕ duplicates top stack item
     Concatenate,     // ⋈ joins two arrays together
     Split,           // ⋉ splits array at index
+    PopLeft,         // ⊣ removes first element
+    PopRight,        // ⊢ removes last element
+    AppendLeft,      // ⊲ adds element to start
+    AppendRight,     // ⊳ adds element to end
 }

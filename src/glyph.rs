@@ -27,18 +27,6 @@ impl Glyph {
                     Err("Must have a number on the stack to create a range".into())
                 }
             }
-            Op::ZeroRange => {
-                if let Some(vec) = self.stack.pop() {
-                    if let Some(n) = vec.first() {
-                        self.stack.push((0..*n).collect());
-                        Ok(())
-                    } else {
-                        Err("Must have a number on the stack to create a range".into())
-                    }
-                } else {
-                    Err("Must have a number on the stack to create a range".into())
-                }
-            }
             Op::Add => {
                 if let (Some(b), Some(a)) = (self.stack.pop(), self.stack.pop()) {
                     self.stack.push(match (a.len(), b.len()) {
@@ -312,6 +300,59 @@ impl Glyph {
                 self.stack.push(nums);
                 Ok(())
             }
+            Op::PopLeft => {
+                if let Some(mut vec) = self.stack.pop() {
+                    if !vec.is_empty() {
+                        let first = vec.remove(0);
+                        self.stack.push(vec);
+                        self.stack.push(vec![first]);
+                        Ok(())
+                    } else {
+                        Err("Cannot pop from empty array".into())
+                    }
+                } else {
+                    Err("Must have an array on the stack".into())
+                }
+            }
+            Op::PopRight => {
+                if let Some(mut vec) = self.stack.pop() {
+                    if let Some(last) = vec.pop() {
+                        self.stack.push(vec);
+                        self.stack.push(vec![last]);
+                        Ok(())
+                    } else {
+                        Err("Cannot pop from empty array".into())
+                    }
+                } else {
+                    Err("Must have an array on the stack".into())
+                }
+            }
+            Op::AppendLeft => {
+                if let (Some(element), Some(mut array)) = (self.stack.pop(), self.stack.pop()) {
+                    if let Some(&value) = element.first() {
+                        array.insert(0, value);
+                        self.stack.push(array);
+                        Ok(())
+                    } else {
+                        Err("Element array is empty".into())
+                    }
+                } else {
+                    Err("Must have an array and element on the stack".into())
+                }
+            }
+            Op::AppendRight => {
+                if let (Some(element), Some(mut array)) = (self.stack.pop(), self.stack.pop()) {
+                    if let Some(&value) = element.first() {
+                        array.push(value);
+                        self.stack.push(array);
+                        Ok(())
+                    } else {
+                        Err("Element array is empty".into())
+                    }
+                } else {
+                    Err("Must have an array and element on the stack".into())
+                }
+            }
         }
     }
 
@@ -389,7 +430,6 @@ impl Glyph {
                     }
                     match op {
                         '↑' => ops.push(Op::Range),
-                        '⇡' => ops.push(Op::ZeroRange),
                         '+' => ops.push(Op::Add),
                         '-' => {
                             if chars.peek().map_or(false, |c| c.is_ascii_digit()) {
@@ -417,6 +457,10 @@ impl Glyph {
                         '⊕' => ops.push(Op::Duplicate),
                         '⋈' => ops.push(Op::Concatenate),
                         '⋉' => ops.push(Op::Split),
+                        '⊣' => ops.push(Op::PopLeft),
+                        '⊢' => ops.push(Op::PopRight),
+                        '⊲' => ops.push(Op::AppendLeft),
+                        '⊳' => ops.push(Op::AppendRight),
                         _ => {}
                     }
                 }
@@ -434,4 +478,3 @@ impl Glyph {
         ops
     }
 }
-

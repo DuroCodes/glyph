@@ -22,7 +22,6 @@ A glyph is a symbol that does something. In this language, glyphs are used to re
 
 These glyphs manipulate the stack.
 
-- `⇡` creates a range from `0` to `n`
 - `↑` creates a range from `1` to `n`
 - `⋕` pushes the length of the array
 - `↔` reverses the array
@@ -32,6 +31,10 @@ These glyphs manipulate the stack.
 - `∅` clears the stack
 - `⋈` joins two arrays together
 - `⋉` splits array at index
+- `⊣` pops first element from array
+- `⊢` pops last element from array
+- `⊲` adds element to start of array
+- `⊳` adds element to end of array
 
 ### Arithmetic glyphs
 
@@ -78,3 +81,5 @@ Here are some examples of what you can do with Glyph.
 5 ⇡ # Create a range from 0 to 5
 ∏ # Multiply the array
 ```
+
+### Array manipulation example
